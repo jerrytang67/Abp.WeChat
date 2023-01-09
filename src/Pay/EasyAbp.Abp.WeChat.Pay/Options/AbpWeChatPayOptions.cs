@@ -1,4 +1,6 @@
-﻿namespace EasyAbp.Abp.WeChat.Pay.Options
+﻿using EasyAbp.Abp.WeChat.Pay.ApiRequests;
+
+namespace EasyAbp.Abp.WeChat.Pay.Options
 {
     /// <summary>
     /// 配置类定义了微信支付模块的相关配置参数。
@@ -14,6 +16,11 @@
         /// 微信支付的 API 密钥信息，会在后续进行签名时被使用。
         /// </summary>
         public string ApiKey { get; set; }
+
+        /// <summary>
+        /// 错误信息的自然语言语种，支持的语种请参考 <see cref="ApiLanguages"/> 的定义。
+        /// </summary>
+        public string AcceptLanguage { get; set; }
 
         #region > 可选参数 <
 
