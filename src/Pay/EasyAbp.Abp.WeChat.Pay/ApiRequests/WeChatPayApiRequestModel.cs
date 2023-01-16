@@ -3,7 +3,7 @@ using System.Text;
 
 namespace EasyAbp.Abp.WeChat.Pay.ApiRequests;
 
-public class WeChatPayApiRequest
+public class WeChatPayApiRequestModel
 {
     public HttpMethod Method { get; protected set; }
 
@@ -15,7 +15,11 @@ public class WeChatPayApiRequest
 
     public string RandomString { get; protected set; }
 
-    public WeChatPayApiRequest(HttpMethod method, string url, string body, string timestamp, string randomString)
+    public WeChatPayApiRequestModel(HttpMethod method,
+        string url,
+        string body,
+        string timestamp,
+        string randomString)
     {
         Method = method;
         Url = url;
@@ -27,7 +31,7 @@ public class WeChatPayApiRequest
     public string GetPendingSignatureString()
     {
         var sb = new StringBuilder();
-        
+
         sb.Append(Method.Method.ToUpper()).Append("\n");
         sb.Append(Url).Append("\n");
         sb.Append(Timestamp).Append("\n");

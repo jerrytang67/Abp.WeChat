@@ -3,7 +3,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using EasyAbp.Abp.WeChat.Common.Extensions;
 using EasyAbp.Abp.WeChat.Pay.Options;
+using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.ApiRequests
@@ -70,6 +72,11 @@ namespace EasyAbp.Abp.WeChat.Pay.ApiRequests
             var response = await client.SendAsync(request);
 
             throw new System.NotImplementedException();
+        }
+
+        private WeChatPayApiRequestModel BuildRequestModel(HttpMethod method, string url, string body, string mchId)
+        {
+            return new WeChatPayApiRequestModel(method, url, body, mchId, RandomStringHelper.GetRandomString());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EasyAbp.Abp.WeChat.Pay.Options
         public string MchId { get; set; }
 
         /// <summary>
-        /// 微信支付的 API 密钥信息，会在后续进行签名时被使用。
+        /// 微信支付的 API v3 密钥信息，会在后续进行签名时被使用。
         /// </summary>
         public string ApiKey { get; set; }
 
@@ -21,8 +21,6 @@ namespace EasyAbp.Abp.WeChat.Pay.Options
         /// 错误信息的自然语言语种，支持的语种请参考 <see cref="ApiLanguages"/> 的定义。
         /// </summary>
         public string AcceptLanguage { get; set; }
-
-        #region > 可选参数 <
 
         /// <summary>
         /// 配置微信支付是否处于沙箱模式。当处于沙箱模式时，所有的支付服务将会调用沙箱支付接口，该参数值默认为 false。
@@ -54,7 +52,10 @@ namespace EasyAbp.Abp.WeChat.Pay.Options
         /// </summary>
         public string CertificateSecret { get; set; }
 
-        #endregion
+        /// <summary>
+        /// PKCS 12 证书的序列号，用于声明使用的证书。
+        /// </summary>
+        public string CertificateSerialNumber { get; set; }
 
         /// <summary>
         /// 构建一个新的 <see cref="AbpWeChatPayModule"/> 实例。
