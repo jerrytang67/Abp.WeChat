@@ -6,9 +6,9 @@ using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
 
-namespace EasyAbp.Abp.WeChat.Pay.Extensions
+namespace EasyAbp.Abp.WeChat.Pay.Security.Extensions
 {
-    public static class WeChatPayUtility
+    public static class WeChatPaySecurityUtility
     {
         public static string Encrypt(this string src, byte[] key)
         {
