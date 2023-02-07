@@ -30,7 +30,7 @@ public class CertificatesManager : ICertificatesManager, ITransientDependency
 
         return CertificatesCache.GetOrAdd(mchId ?? DefaultCertificateKey, _ =>
             new Lazy<WeChatPayCertificate>(() =>
-                new WeChatPayCertificate(mchId, certificateBytes, options.CertificateSecret))).Value;
+                new WeChatPayCertificate(options.MchId, certificateBytes, options.CertificateSecret))).Value;
     }
 
     protected virtual async Task<byte[]> GetX509CertificateBytesAsync(AbpWeChatPayOptions options)

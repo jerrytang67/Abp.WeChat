@@ -1,19 +1,18 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using EasyAbp.Abp.WeChat.Common.Extensions;
 using EasyAbp.Abp.WeChat.Pay.ApiRequests;
 using EasyAbp.Abp.WeChat.Pay.Options;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Encodings;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.OpenSsl;
+using JetBrains.Annotations;
+using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.Security;
 
-public class WeChatPayAuthorizationGenerator : IWeChatPayAuthorizationGenerator
+public class WeChatPayAuthorizationGenerator : IWeChatPayAuthorizationGenerator, ITransientDependency
 {
     private readonly IAbpWeChatPayOptionsProvider _weChatPayOptionsProvider;
     private readonly ICertificatesManager _certificatesManager;
@@ -25,31 +24,26 @@ public class WeChatPayAuthorizationGenerator : IWeChatPayAuthorizationGenerator
         _certificatesManager = certificatesManager;
     }
 
-    public async Task<string> GenerateAuthorizationAsync(HttpMethod method, string url, string body, string mchId)
+    public async Task<string> GenerateAuthorizationAsync(HttpMethod method, string url, string body, [CanBeNull] string mchId = null)
     {
-        var options = await _weChatPayOptionsProvider.GetAsync(mchId);
+        var options = await _weChatPayOptionsProvider.GetAsync(null);
         var timeStamp = DateTimeHelper.GetNowTimeStamp().ToString();
         var nonceStr = RandomStringHelper.GetRandomString();
 
         var requestModel = new WeChatPayApiRequestModel(method, url, body, timeStamp, nonceStr);
         var pendingSignature = requestModel.GetPendingSignatureString();
         var certificate = await _certificatesManager.GetCertificateAsync(mchId);
-        var signString = RsaSign(pendingSignature, null);
+        var signString = RsaSign(pendingSignature, certificate);
 
         return
-            $"WECHATPAY2-SHA256-RSA2048 mchid=\"{mchId}\",nonce_str=\"{nonceStr}\",timestamp=\"{timeStamp}\",serial_no=\"{options.CertificateSerialNumber},signature=\"{signString}";
+            $"WECHATPAY2-SHA256-RSA2048 mchid=\"{options.MchId}\",nonce_str=\"{nonceStr}\",timestamp=\"{timeStamp}\",serial_no=\"{certificate.X509Certificate.SerialNumber}\",signature=\"{signString}";
     }
 
-    private string RsaSign(string pendingSignature, string privateKey)
+    private string RsaSign(string pendingSignature, WeChatPayCertificate certificate)
     {
-        var bytesToSign = Encoding.UTF8.GetBytes(pendingSignature);
-        var engine = new Pkcs1Encoding(new RsaEngine());
-        using (var txtReader = new StringReader(privateKey))
-        {
-            var keyPair = (AsymmetricCipherKeyPair)new PemReader(txtReader).ReadObject();
-            engine.Init(true, keyPair.Private);
-        }
+        var privateKey = certificate.X509Certificate.GetRSAPrivateKey();
+        var signDataBytes = privateKey.SignData(Encoding.UTF8.GetBytes(pendingSignature), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-        return Convert.ToBase64String(engine.ProcessBlock(bytesToSign, 0, bytesToSign.Length));
+        return Convert.ToBase64String(signDataBytes);
     }
 }
