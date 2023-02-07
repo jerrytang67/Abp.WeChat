@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 
 namespace EasyAbp.Abp.WeChat.Pay.ApiRequests;
@@ -33,7 +34,7 @@ public class WeChatPayApiRequestModel
         var sb = new StringBuilder();
 
         sb.Append(Method.Method.ToUpper()).Append("\n");
-        sb.Append(Url).Append("\n");
+        sb.Append(new Uri(Url).PathAndQuery).Append("\n");
         sb.Append(Timestamp).Append("\n");
         sb.Append(RandomString).Append("\n");
         sb.Append(Body).Append("\n");
