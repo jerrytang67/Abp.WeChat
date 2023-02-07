@@ -53,11 +53,6 @@ namespace EasyAbp.Abp.WeChat.Pay.Options
         public string CertificateSecret { get; set; }
 
         /// <summary>
-        /// PKCS 12 证书的序列号，用于声明使用的证书。
-        /// </summary>
-        public string CertificateSerialNumber { get; set; }
-
-        /// <summary>
         /// 构建一个新的 <see cref="AbpWeChatPayModule"/> 实例。
         /// </summary>
         public AbpWeChatPayOptions()

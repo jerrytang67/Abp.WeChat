@@ -66,10 +66,5 @@ public class AbpWeChatPaySettingDefinitionProvider : SettingDefinitionProvider
             AbpWeChatPaySettings.AcceptLanguage,
             _options.AcceptLanguage
         ));
-
-        context.Add(new SettingDefinition(
-            AbpWeChatPaySettings.CertificateSerialNumber,
-            _options.CertificateSerialNumber
-        ));
     }
 }
