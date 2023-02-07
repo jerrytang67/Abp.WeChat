@@ -16,10 +16,13 @@ namespace EasyAbp.Abp.WeChat.Pay.Security;
 public class WeChatPayAuthorizationGenerator : IWeChatPayAuthorizationGenerator
 {
     private readonly IAbpWeChatPayOptionsProvider _weChatPayOptionsProvider;
+    private readonly ICertificatesManager _certificatesManager;
 
-    public WeChatPayAuthorizationGenerator(IAbpWeChatPayOptionsProvider weChatPayOptionsProvider)
+    public WeChatPayAuthorizationGenerator(IAbpWeChatPayOptionsProvider weChatPayOptionsProvider,
+        ICertificatesManager certificatesManager)
     {
         _weChatPayOptionsProvider = weChatPayOptionsProvider;
+        _certificatesManager = certificatesManager;
     }
 
     public async Task<string> GenerateAuthorizationAsync(HttpMethod method, string url, string body, string mchId)
@@ -30,7 +33,8 @@ public class WeChatPayAuthorizationGenerator : IWeChatPayAuthorizationGenerator
 
         var requestModel = new WeChatPayApiRequestModel(method, url, body, timeStamp, nonceStr);
         var pendingSignature = requestModel.GetPendingSignatureString();
-        var signString = RsaSign(pendingSignature, options.ApiKey);
+        var certificate = await _certificatesManager.GetCertificateAsync(mchId);
+        var signString = RsaSign(pendingSignature, null);
 
         return
             $"WECHATPAY2-SHA256-RSA2048 mchid=\"{mchId}\",nonce_str=\"{nonceStr}\",timestamp=\"{timeStamp}\",serial_no=\"{options.CertificateSerialNumber},signature=\"{signString}";

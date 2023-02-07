@@ -3,9 +3,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using EasyAbp.Abp.WeChat.Common.Extensions;
 using EasyAbp.Abp.WeChat.Pay.Options;
-using Volo.Abp;
+using EasyAbp.Abp.WeChat.Pay.Security;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.ApiRequests
@@ -14,13 +13,16 @@ namespace EasyAbp.Abp.WeChat.Pay.ApiRequests
     public class DefaultWeChatPayApiRequester : IWeChatPayApiRequester, ITransientDependency
     {
         private readonly IAbpWeChatPayHttpClientFactory _httpClientFactory;
+        private readonly IWeChatPayAuthorizationGenerator _authorizationGenerator;
         private readonly IAbpWeChatPayOptionsProvider _optionsProvider;
 
         public DefaultWeChatPayApiRequester(IAbpWeChatPayHttpClientFactory httpClientFactory,
-            IAbpWeChatPayOptionsProvider optionsProvider)
+            IAbpWeChatPayOptionsProvider optionsProvider,
+            IWeChatPayAuthorizationGenerator authorizationGenerator)
         {
             _httpClientFactory = httpClientFactory;
             _optionsProvider = optionsProvider;
+            _authorizationGenerator = authorizationGenerator;
         }
 
         public virtual async Task<XmlDocument> RequestAsync(string url, string body, string mchId)
@@ -72,11 +74,6 @@ namespace EasyAbp.Abp.WeChat.Pay.ApiRequests
             var response = await client.SendAsync(request);
 
             throw new System.NotImplementedException();
-        }
-
-        private WeChatPayApiRequestModel BuildRequestModel(HttpMethod method, string url, string body, string mchId)
-        {
-            return new WeChatPayApiRequestModel(method, url, body, mchId, RandomStringHelper.GetRandomString());
         }
     }
 }

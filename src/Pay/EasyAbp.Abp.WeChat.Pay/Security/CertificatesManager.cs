@@ -7,7 +7,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.Security;
 
-public class CertificatesManager : ICertificatesManager
+public class CertificatesManager : ICertificatesManager, ITransientDependency
 {
     protected IAbpLazyServiceProvider AbpLazyServiceProvider { get; }
     protected IAbpWeChatPayOptionsProvider AbpWeChatPayOptionsProvider { get; }
