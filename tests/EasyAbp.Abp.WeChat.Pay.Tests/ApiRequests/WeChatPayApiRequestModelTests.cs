@@ -15,6 +15,6 @@ public class WeChatPayApiRequestModelTests : AbpWeChatPayTestBase
             null, "1554208460", "593BEC0C930BF1AFEB40B4A08C8FB242");
 
         var pendingSignatureString = model.GetPendingSignatureString();
-        pendingSignatureString.ShouldBe(@"GET\n/v3/certificates\n1554208460\n593BEC0C930BF1AFEB40B4A08C8FB242");
+        pendingSignatureString.ShouldBe("GET\n/v3/certificates\n1554208460\n593BEC0C930BF1AFEB40B4A08C8FB242\n\n");
     }
 }
