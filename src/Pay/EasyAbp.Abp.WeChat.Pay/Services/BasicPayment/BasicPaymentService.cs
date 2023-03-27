@@ -1,19 +1,17 @@
 ﻿using System.Threading.Tasks;
 using EasyAbp.Abp.WeChat.Pay.Options;
+using EasyAbp.Abp.WeChat.Pay.Services.BasicPayment.ParametersModel;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.Services.BasicPayment;
 
-public class JsPaymentService : BasicPaymentService
+public abstract class BasicPaymentService : WeChatPayServiceBase, IBasicPaymentService
 {
-    public JsPaymentService(AbpWeChatPayOptions options,
+    public BasicPaymentService(AbpWeChatPayOptions options,
         IAbpLazyServiceProvider lazyServiceProvider) : base(options,
         lazyServiceProvider)
     {
     }
 
-    public override Task CreateOrderAsync<T>(T input)
-    {
-        throw new System.NotImplementedException();
-    }
+    public abstract Task CreateOrderAsync<T>(T input);
 }
