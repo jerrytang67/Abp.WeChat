@@ -7,11 +7,16 @@ namespace EasyAbp.Abp.WeChat.Pay.Services.BasicPayment;
 
 public abstract class BasicPaymentService : WeChatPayServiceBase, IBasicPaymentService
 {
+    public string CreateOrderUrl { get; protected set; } = string.Empty;
+
     public BasicPaymentService(AbpWeChatPayOptions options,
         IAbpLazyServiceProvider lazyServiceProvider) : base(options,
         lazyServiceProvider)
     {
     }
 
-    public abstract Task CreateOrderAsync<T>(T input);
+    public virtual Task CreateOrderAsync(CreateOrderRequest request)
+    {
+        return ApiRequester.RequestAsync<CreateOrderResponse>(CreateOrderUrl, request, null);
+    }
 }

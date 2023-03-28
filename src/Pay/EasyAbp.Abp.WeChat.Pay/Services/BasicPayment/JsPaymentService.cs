@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using EasyAbp.Abp.WeChat.Pay.Options;
+﻿using EasyAbp.Abp.WeChat.Pay.Options;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.WeChat.Pay.Services.BasicPayment;
@@ -10,10 +9,6 @@ public class JsPaymentService : BasicPaymentService
         IAbpLazyServiceProvider lazyServiceProvider) : base(options,
         lazyServiceProvider)
     {
-    }
-
-    public override Task CreateOrderAsync<T>(T input)
-    {
-        throw new System.NotImplementedException();
+        CreateOrderUrl = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
     }
 }

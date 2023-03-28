@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace EasyAbp.Abp.WeChat.Pay.Services.BasicPayment.ParametersModel;
 
-public class CreateOrderInput
+public class CreateOrderRequest
 {
     /// <summary>
     /// 应用 ID。
