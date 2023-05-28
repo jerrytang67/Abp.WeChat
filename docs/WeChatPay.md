@@ -32,20 +32,29 @@ public override void ConfigureServices (ServiceConfigurationContext context)
         // 默认商户 Id
         op.MchId = "000000000000000";
         // 微信支付的 API 密钥信息，会在后续进行签名时被使用。
-        // 注意，本值是密文，如您在 appsettings.json 或 Configure<AbpWeChatPayOptions> 中设置本值，须自行根据加密后填入，参考：https://docs.abp.io/en/abp/latest/String-Encryption
-        // 同样是密文的配置项还有：CertificateSecret
         op.ApiKey = "****************************";
         // 支付结果回调地址，用于接收支付结果通知。
         // 如果安装了本模块提供的 HttpApi 模块，则默认是 域名 + /wechat-pay/notify 路由。
         op.NotifyUrl = "https://xxx.xxxx.com/wechat-pay/notify";
+        
+        // 如果需要支持退款操作，则以下配置必须
+        
         // 退款结果回调地址，用于接收退款结果通知。
         // 如果安装了本模块提供的 HttpApi 模块，则默认是 域名 + /wechat-pay/refund-notify 路由。
         op.RefundNotifyUrl = "https://xxx.xxxx.com/wechat-pay/refund-notify";
+        // 存放微信支付API证书的BLOB容器名，参考：https://docs.abp.io/en/abp/latest/Blob-Storing
+        op.CertificateBlobContainerName = "MyBlobContainer";
+        // 存放微信支付API证书的BLOB名称
+        op.CertificateBlobName = "WeChatPayCert";
+        // 微信支付API证书秘钥，默认为商户名
+        op.CertificateSecret = "000000000000000";
     });
 }
 ```
 
 完整的 Setting 项清单：https://github.com/EasyAbp/Abp.WeChat/blob/master/src/Pay/EasyAbp.Abp.WeChat.Pay/Settings/AbpWeChatPaySettingDefinitionProvider.cs
+
+> 注意，如您在 appsettings.json 中通过 Setting 设置 `ApiKey` 或 `CertificateSecret`，须自行加密后填入，参考：https://docs.abp.io/en/abp/latest/String-Encryption
 
 ## 二、提供的回调接口
 

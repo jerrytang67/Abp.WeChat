@@ -50,7 +50,6 @@ namespace EasyAbp.Abp.WeChat.Pay.Options
 
         /// <summary>
         /// PKCS 12 证书的密码，默认为商户号(<see cref="MchId"/>)。
-        /// 注意，本值是密文！
         /// </summary>
         public string CertificateSecret { get; set; }
 

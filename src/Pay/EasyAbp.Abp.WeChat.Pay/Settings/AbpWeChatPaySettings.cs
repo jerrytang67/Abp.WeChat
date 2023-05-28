@@ -6,6 +6,9 @@ public static class AbpWeChatPaySettings
 
     public const string MchId = GroupName + ".MchId";
 
+    /// <summary>
+    /// 注意，本值是密文！
+    /// </summary>
     public const string ApiKey = GroupName + ".ApiKey";
 
     public const string IsSandBox = GroupName + ".IsSandBox";
@@ -18,6 +21,9 @@ public static class AbpWeChatPaySettings
 
     public const string CertificateBlobName = GroupName + ".CertificateBlobName";
 
+    /// <summary>
+    /// 注意，本值是密文！
+    /// </summary>
     public const string CertificateSecret = GroupName + ".CertificateSecret";
 
     public const string AcceptLanguage = GroupName + ".AcceptLanguage";
